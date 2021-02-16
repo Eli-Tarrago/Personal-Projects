@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import os
 # flag = open('flag.txt', 'r').read().strip().encode()
-flag = '13111111111'.encode()
+output = '134af6e1297bc4a96f6a87fe046684e8047084ee046d84c5282dd7ef292dc9'
 
 
 class XOR:
@@ -12,7 +12,7 @@ class XOR:
         print(self.key)
     def encrypt(self, data: bytes) -> bytes:
 
-        # Define a new variable, in string format.
+        # Define a new variable, in byte format.
         xored = b''
 
         # for i in start: 0, end: len data, step: 1
@@ -22,10 +22,19 @@ class XOR:
             # xored variable is string, that recieves "additions" as the loop progresses
             xored += bytes([data[i] ^ self.key[i % len(self.key)]])
             # print(bytes([data[i] ^ self.key[i % len(self.key)]]))
-            #                                   i = range, i%key will be, 0,1,2,3
+            #                                   i = range, i%key will be, 0,1,2,3. Making the key length, 4.
         return xored
     def decrypt(self, data: bytes) -> bytes:
-        return self.encrypt(data)
+        unhexedData = []
+        for x in bytes.fromhex(data):
+           unhexedData.append(x)
+
+        self.key = [91, 30, 180, 154]
+        unxored = b''
+
+        for ITEM in range(0, len(data), 1):
+            unxored += bytes([data[ITEM] ^ self.key[ITEM % len(self.key)]])
+
 
 def main():
     global flag
